@@ -1,5 +1,6 @@
 const {User} = require('../db/model');
 const {formatUser} = require('./_format');
+const doCrypto = require('../utils/crypto');
 
 /**
  * 查询用户信息
@@ -33,7 +34,7 @@ async function getUserInfo(userName, password) {
 async function createUser({userName, password, gender = 3, nickName}) {
   const res = await User.create({
     userName,
-    password,
+    password: doCrypto(password),
     gender,
     nickName: nickName | userName,
   });
