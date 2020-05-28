@@ -36,12 +36,31 @@ async function createUser({userName, password, gender = 3, nickName}) {
     userName,
     password: doCrypto(password),
     gender,
-    nickName: nickName | userName,
+    nickName: nickName || userName,
   });
   return res.dataValues;
+}
+
+/**
+ * 修改用户信息
+ */
+async function updateUser({newNickName, newCity, newPicture, userId}) {
+  const res = await User.update(
+    {
+      city: newCity,
+      nickName: newNickName,
+      picture: newPicture,
+    },
+    {
+      where: {id: userId},
+    }
+  );
+  console.log(res);
+  return res[0] > 0;
 }
 
 module.exports = {
   getUserInfo,
   createUser,
+  updateUser,
 };

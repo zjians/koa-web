@@ -1,10 +1,11 @@
-const {getUserInfo, createUser} = require('../services/user');
+const {getUserInfo, createUser, updateUser} = require('../services/user');
 const {SuccessModel, ErrorModel} = require('../model/ResModel');
 const doCrypto = require('../utils/crypto');
 const {
   registerUserNameNotExistInfo,
   registerUserNameExistInfo,
   registerFailInfo,
+  changeInfoFailInfo,
 } = require('../model/ErrorInfo');
 
 /**
@@ -53,8 +54,33 @@ async function login({userName, password, ctx}) {
   return new ErrorModel(registerUserNameNotExistInfo);
 }
 
+/**
+ * 补充用户信息
+ * @param {String} nickName 用户昵称
+ * @param {String} city 城市
+ * @param {String} picture 头像地址
+ */
+async function changeInfo({ctx, nickName, city, picture}) {
+  const {userName, id} = ctx.session.userInfo;
+  if (!nickName) {
+    nickName = userName;
+  }
+  const res = await updateUser({
+    newNickName: nickName,
+    newCity: city,
+    newPicture: picture,
+    userName,
+    userId: id,
+  });
+  if (res) {
+    return new SuccessModel();
+  }
+  return new ErrorModel(changeInfoFailInfo);
+}
+
 module.exports = {
   isExist,
   register,
   login,
+  changeInfo,
 };
