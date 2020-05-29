@@ -6,7 +6,9 @@
     "start": "node bin/www",
     "dev": "cross-env NODE_ENV=dev PORT=8080 ./node_modules/.bin/nodemon --inspect=9229 bin/www",
     "prd": "pm2 start bin/www",
-    "test": "cross-env NODE_ENV=test jest --runInBand --forceExit --colors"
+    "test": "cross-env NODE_ENV=test jest --runInBand --forceExit --colors",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -w -r 0",
+    "changelog:save": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "dependencies": {
     "ajv": "^6.12.2",
