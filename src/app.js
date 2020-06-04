@@ -20,6 +20,7 @@ const errorViewRouter = require('./routes/view/error');
 // api-router
 const userApiRouter = require('./routes/api/user');
 const utilsApiRouter = require('./routes/api/utils');
+const blogApiRouter = require('./routes/api/blog-home');
 
 // error handler
 onerror(app);
@@ -68,10 +69,10 @@ app.use(
 
 // routes register
 app.use(userViewRouter.routes(), userViewRouter.allowedMethods());
-app.use(errorViewRouter.routes(), errorViewRouter.allowedMethods());
-
 app.use(userApiRouter.routes(), userApiRouter.allowedMethods());
+app.use(blogApiRouter.routes(), blogApiRouter.allowedMethods());
 app.use(utilsApiRouter.routes(), utilsApiRouter.allowedMethods());
+app.use(errorViewRouter.routes(), errorViewRouter.allowedMethods());
 
 // error-handling
 app.on('error', (err, ctx) => {
