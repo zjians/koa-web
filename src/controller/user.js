@@ -1,4 +1,9 @@
-const {getUserInfo, createUser, updateUser} = require('../services/user');
+const {
+  getUserInfo,
+  createUser,
+  updateUser,
+  updatePwd,
+} = require('../services/user');
 const {SuccessModel, ErrorModel} = require('../model/ResModel');
 const doCrypto = require('../utils/crypto');
 const {
@@ -55,6 +60,15 @@ async function login({userName, password, ctx}) {
 }
 
 /**
+ * 退出登录
+ * @param {Object} ctx
+*/
+async function logout (ctx) {
+  delete ctx.session.userInfo;
+  return new SuccessModel()
+}
+
+/**
  * 补充用户信息
  * @param {String} nickName 用户昵称
  * @param {String} city 城市
@@ -78,9 +92,28 @@ async function changeInfo({ctx, nickName, city, picture}) {
   return new ErrorModel(changeInfoFailInfo);
 }
 
+/**
+ * 修改密码
+ * @param {Object} ctx koa 上下文
+ * @param {String} password 原密码
+ * @param {String} newPassword 新密码
+ */
+async function changePwd({ctx, password, newPassword}) {
+  const res = await updatePwd(password, newPassword);
+  if (res) {
+    return new SuccessModel();
+  }
+  return new ErrorModel({
+    errno: 10000,
+    message: '密码修改失败，请检查原密码是否正确！',
+  });
+}
+
 module.exports = {
   isExist,
   register,
   login,
   changeInfo,
+  changePwd,
+  logout
 };

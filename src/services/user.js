@@ -59,8 +59,26 @@ async function updateUser({newNickName, newCity, newPicture, userId}) {
   return res[0] > 0;
 }
 
+/**
+ * 修改密码
+ * @param {String} password 原密码
+ * @param {String} newPassword 新密码
+ */
+async function updatePwd(password, newPassword) {
+  const res = await User.update(
+    {
+      password: doCrypto(newPassword),
+    },
+    {
+      where: {password: doCrypto(password)},
+    }
+  );
+  return res[0] > 0;
+}
+
 module.exports = {
   getUserInfo,
   createUser,
   updateUser,
+  updatePwd,
 };

@@ -52,6 +52,34 @@ function userValidate(data = {}) {
   return validate(SCHEMA, data);
 }
 
+/**
+ * 修改密码的验证
+ * @param {Object} data
+ */
+function passwordValidate(data = {}) {
+  return validate(
+    {
+      type: 'object',
+      properties: {
+        password: {
+          type: 'string',
+          maxLength: 255,
+          minLength: 3,
+        },
+        newPassword: {
+          type: 'string',
+          maxLength: 255,
+          minLength: 3,
+        },
+      },
+      additionalProperties: true, // json串允许出现除schema定义之外属性
+      required: ['password', 'newPassword'],
+    },
+    data
+  );
+}
+
 module.exports = {
   userValidate,
+  passwordValidate,
 };
